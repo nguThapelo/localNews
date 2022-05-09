@@ -7,7 +7,7 @@ const technologyBtn = document.getElementById('technology');
 const searchBtn = document.getElementById('searchBtn');
 
 window.onload = () => {
-    newstype.innerHTML = '<h4>Headlines</h4>';
+    newstype.innerHTML = '<h4>HEADLINES</h4>';
     fetchHeadlinesNews();
 };
 
@@ -36,37 +36,37 @@ const SEARCH_NEWS = 'https://newsapi.org/v2/everything?q=';
 //event listeners
 
 generalBtn.addEventListener('click', () => {
-    newstype.innerHTML = '<h4>General News</h4>';
+    newstype.innerHTML = '<h4>GENERAL NEWS/h4>';
     
     fetchGeneralNews();
 });
 
 sportsBtn.addEventListener('click', () => {
-    newstype.innerHTML = '<h4>Sports News</h4>';
+    newstype.innerHTML = '<h4>SPORTS NEWS</h4>';
 
     fetchSportsNews();
 });
 
 businessBtn.addEventListener('click', () => {
-    newstype.innerHTML = '<h4>Business News</h4>';
+    newstype.innerHTML = '<h4>BUSINESS NEWS</h4>';
 
     fetchBusinessNews();
 });
 
 entertainmentBtn.addEventListener('click', () => {
-    newstype.innerHTML = '<h4>Entertainment News</h4>';
+    newstype.innerHTML = '<h4>ENTERTAINMENT NEWS</h4>';
 
     fetchEntertainmentNews();
 });
 
 technologyBtn.addEventListener('click', () => {
-    newstype.innerHTML = '<h4>Technology News</h4>';
+    newstype.innerHTML = '<h4>TECHNOLOGY NEWS</h4>';
 
     fetchTechnologyNews();
 });
 
 searchBtn.addEventListener('click', () => {
-    newstype.innerHTML = `<h4>Search: ${newsinput.value}</h4>`;
+    newstype.innerHTML = `<h4>Results: ${newsinput.value}</h4>`;
 
     fetchNews();
 });
@@ -202,6 +202,7 @@ newsData.forEach(news => {
     image.setAttribute('height', 'matchparnt');
     image.setAttribute('width', '100%');
     image.src = news.urlToImage;
+
 
     var cardBody = document.createElement('div');
 
