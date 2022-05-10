@@ -12,4 +12,11 @@ Bootstrap (CSS framework)
 //API
 from https://newsapi.org 
 
+could not deploy the app due to the API not fetching data in production apps.
+- Screen Cast of how the App works
+
+
+
+
+https://user-images.githubusercontent.com/82023589/167626002-b2fb3baa-e233-40bd-902a-0d96c8b0e2a8.mp4
 
