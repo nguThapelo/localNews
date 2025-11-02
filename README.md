@@ -11,7 +11,9 @@ Bootstrap (CSS framework)
 
 //API
 from https://newsapi.org 
+visit news on
 
+https://news-local-lex.netlify.app/ 
 could not deploy the app due to the API not fetching data in production apps.
 - Screen Cast of how the App works
 
