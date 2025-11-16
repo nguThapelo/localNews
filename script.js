@@ -1,5 +1,5 @@
 // === Replace these with your actual API keys ===
-const NEWS_API_KEY = 'YOUR_NEWSAPI_ORG_KEY';
+const NEWS_API_KEY = 'ebfe10e6398d4085ad3e99b5f46c4f70';
 const WEATHER_API_KEY = 'YOUR_OPENWEATHERMAP_KEY';
 const STOCK_API_KEY = 'ZBO2GJPIDNM71Z7Z';
 
@@ -69,7 +69,7 @@ async function fetchNewsByCategory(category) {
       card.innerHTML = `
         <img src="${article.urlToImage || 'https://via.placeholder.com/600x180?text=No+Image'}" alt="News Image" />
         <div class="card-body">
-          <h5 class="card-title">${article.title}</h5>
+          <h6 class="card-title">${article.title}</h6>
           <p class="card-text">${article.description || ''}</p>
           <a href="${article.url}" target="_blank" class="btn btn-primary btn-sm">Read More</a>
         </div>
@@ -85,7 +85,7 @@ async function fetchNewsByCategory(category) {
 function loadWeatherTab() {
   setActiveTab('tab-weather');
   contentArea.innerHTML = `
-    <h4>Check Weather</h4>
+    <h6>Check Weather</h6>
     <form id="weatherForm" class="mb-3">
       <div class="input-group">
         <input type="text" class="form-control" id="cityInput" placeholder="Enter city name" required />
@@ -107,7 +107,7 @@ function loadWeatherTab() {
       const icon = data.weather[0].icon ? `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png` : '';
       weatherResult.innerHTML = `
         <div class="card p-3">
-          <h5>${data.name}, ${data.sys.country}</h5>
+          <h6>${data.name}, ${data.sys.country}</h6>
           <p><img src="${icon}" alt="Weather icon" /> ${data.weather[0].description}</p>
           <p>Temperature: ${data.main.temp} °C</p>
           <p>Humidity: ${data.main.humidity}%</p>
@@ -123,7 +123,7 @@ function loadWeatherTab() {
 function loadStocksTab() {
   setActiveTab('tab-stocks');
   contentArea.innerHTML = `
-    <h4>Stock Quote</h4>
+    <h6>Stock Quote</h6>
     <form id="stockForm" class="mb-3">
       <div class="input-group">
         <input type="text" class="form-control" id="stockSymbol" placeholder="Enter stock symbol (e.g. AAPL)" required />
@@ -149,7 +149,7 @@ function loadStocksTab() {
       }
       stockResult.innerHTML = `
         <div class="card p-3">
-          <h5>${symbol} - ${quote['01. symbol']}</h5>
+          <h6>${symbol} - ${quote['01. symbol']}</h6>
           <p>Price: $${parseFloat(quote['05. price']).toFixed(2)}</p>
           <p>Change: ${quote['09. change']} (${quote['10. change percent']})</p>
           <p>Volume: ${parseInt(quote['06. volume']).toLocaleString()}</p>
