@@ -1,5 +1,5 @@
 // === Replace these with your actual API keys ===
-const NEWS_API_KEY = 'ebfe10e6398d4085ad3e99b5f46c4f70';
+const NEWS_API_KEY = 'HW4WVSHMUXG0YRKH';
 const WEATHER_API_KEY = 'c554ab54e127839a957faf9d29e1fa1e';
 const STOCK_API_KEY = 'ZBO2GJPIDNM71Z7Z';
 
@@ -56,7 +56,7 @@ async function fetchNewsByCategory(category) {
   const container = document.getElementById(category);
   container.innerHTML = 'Loading news...';
   try {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${NEWS_API_KEY}`;
+    const url = `http://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${NEWS_API_KEY}`;
     const data = await fetchJson(url);
     if (!data.articles.length) {
       container.innerHTML = '<p>No news found.</p>';
@@ -102,7 +102,7 @@ function loadWeatherTab() {
     if (!city) return;
     weatherResult.innerHTML = 'Loading weather...';
     try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${WEATHER_API_KEY}`;
+      const url = `http://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${WEATHER_API_KEY}`;
       const data = await fetchJson(url);
       const icon = data.weather[0].icon ? `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png` : '';
       weatherResult.innerHTML = `
