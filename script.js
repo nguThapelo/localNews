@@ -104,7 +104,7 @@ function loadWeatherTab() {
     try {
       const url = `http://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${WEATHER_API_KEY}`;
       const data = await fetchJson(url);
-      const icon = data.weather[0].icon ? `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png` : '';
+      const icon = data.weather[0].icon ? `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png` : '';
       weatherResult.innerHTML = `
         <div class="card p-3">
           <h6>${data.name}, ${data.sys.country}</h6>
