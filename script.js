@@ -1,7 +1,4 @@
-// === Replace these with your actual API keys ===
-const NEWS_API_KEY = 'HW4WVSHMUXG0YRKH';
-const WEATHER_API_KEY = 'c554ab54e127839a957faf9d29e1fa1e';
-const STOCK_API_KEY = 'ZBO2GJPIDNM71Z7Z';
+// No API keys here on frontend, keys live only in backend proxy server
 
 // Elements
 const contentArea = document.getElementById('content-area');
@@ -51,12 +48,13 @@ async function fetchJson(url) {
   return await res.json();
 }
 
-// News fetching
+// News fetching: proxy through your backend
 async function fetchNewsByCategory(category) {
   const container = document.getElementById(category);
   container.innerHTML = 'Loading news...';
   try {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${NEWS_API_KEY}`;
+    // Proxy endpoint called instead of NewsAPI directly
+    const url = `/api/news?country=us&category=${category}`;
     const data = await fetchJson(url);
     if (!data.articles.length) {
       container.innerHTML = '<p>No news found.</p>';
@@ -102,7 +100,8 @@ function loadWeatherTab() {
     if (!city) return;
     weatherResult.innerHTML = 'Loading weather...';
     try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${WEATHER_API_KEY}`;
+      // Proxy backend for weather API call
+      const url = `/api/weather?q=${encodeURIComponent(city)}`;
       const data = await fetchJson(url);
       const icon = data.weather[0].icon ? `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png` : '';
       weatherResult.innerHTML = `
@@ -140,7 +139,8 @@ function loadStocksTab() {
     if (!symbol) return;
     stockResult.innerHTML = 'Loading stock data...';
     try {
-      const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${STOCK_API_KEY}`;
+      // Proxy backend for stock API call
+      const url = `/api/stocks?symbol=${symbol}`;
       const data = await fetchJson(url);
       const quote = data['Global Quote'];
       if (!quote || Object.keys(quote).length === 0) {
