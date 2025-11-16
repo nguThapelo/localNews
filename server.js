@@ -12,7 +12,7 @@ app.use(cors()); // Enable CORS so your frontend can call this server
 // Proxy route for NewsAPI
 app.get('/api/news', async (req, res) => {
   // Extract query params for flexibility
-  const { category = 'general', country = 'us' } = req.query;
+  const { category = 'general', country = 'rsa' } = req.query;
   const NEWS_API_KEY = process.env.NEWS_API_KEY;
 
   const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${NEWS_API_KEY}`;

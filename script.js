@@ -54,7 +54,7 @@ async function fetchNewsByCategory(category) {
   container.innerHTML = 'Loading news...';
   try {
     // Proxy endpoint called instead of NewsAPI directly
-    const url = `/api/news?country=us&category=${category}`;
+    const url = `/api/news?country=rsa&category=${category}`;
     const data = await fetchJson(url);
     if (!data.articles.length) {
       container.innerHTML = '<p>No news found.</p>';
