@@ -1,6 +1,6 @@
 // === Replace these with your actual API keys ===
 const NEWS_API_KEY = 'ebfe10e6398d4085ad3e99b5f46c4f70';
-const WEATHER_API_KEY = '3690341324df4b6d7c0c5152f40a8bc7';
+const WEATHER_API_KEY = 'c554ab54e127839a957faf9d29e1fa1e';
 const STOCK_API_KEY = 'ZBO2GJPIDNM71Z7Z';
 
 // Elements
