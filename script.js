@@ -1,242 +1,180 @@
-//get elements by IDs
-const generalBtn = document.getElementById('generalnews');
-const sportsBtn = document.getElementById('sports');
-const businessBtn = document.getElementById('business');
-const entertainmentBtn = document.getElementById('entertainment');
-const technologyBtn = document.getElementById('technology');
-const searchBtn = document.getElementById('searchBtn');
+// === Replace these with your actual API keys ===
+const NEWS_API_KEY = 'YOUR_NEWSAPI_ORG_KEY';
+const WEATHER_API_KEY = 'YOUR_OPENWEATHERMAP_KEY';
+const STOCK_API_KEY = 'ZBO2GJPIDNM71Z7Z';
 
-window.onload = () => {
-    newstype.innerHTML = '<h4>HEADLINES</h4>';
-    fetchHeadlinesNews();
-};
+// Elements
+const contentArea = document.getElementById('content-area');
 
-//input bar
-const newsinput = document.getElementById('newsinput');
-
-//news body
-const newstype = document.getElementById('newstype');
-const newsdetails = document.getElementById('newsdetails');
-//store news data
-
-var newsData = [];
-//get API from https://newsapi.org 
-
-const API_KEY = '83b5d4b0c05f4ab3a5317e86a49a6aac';
-
-// API for each category
-const HEADLINES = 'https://newsapi.org/v2/top-headlines?country=za&apiKey=';
-const GENERAL_NEWS = 'https://newsapi.org/v2/top-headlines?country=za&category=general&apiKey=';
-const SPORTS_NEWS = 'https://newsapi.org/v2/top-headlines?country=za&category=sports&apiKey=';
-const BUSINESS_NEWS = 'https://newsapi.org/v2/top-headlines?country=za&category=business&apiKey=';
-const ENTERTAINMENT_NEWS = 'https://newsapi.org/v2/top-headlines?country=za&category=entertainment&apiKey=';
-const TECHNOLOGY_NEWS = 'https://newsapi.org/v2/top-headlines?country=za&category=technology&apiKey=';
-const SEARCH_NEWS = 'https://newsapi.org/v2/everything?q=';
-
-//event listeners
-
-generalBtn.addEventListener('click', () => {
-    newstype.innerHTML = '<h4>GENERAL NEWS/h4>';
-    
-    fetchGeneralNews();
-});
-
-sportsBtn.addEventListener('click', () => {
-    newstype.innerHTML = '<h4>SPORTS NEWS</h4>';
-
-    fetchSportsNews();
-});
-
-businessBtn.addEventListener('click', () => {
-    newstype.innerHTML = '<h4>BUSINESS NEWS</h4>';
-
-    fetchBusinessNews();
-});
-
-entertainmentBtn.addEventListener('click', () => {
-    newstype.innerHTML = '<h4>ENTERTAINMENT NEWS</h4>';
-
-    fetchEntertainmentNews();
-});
-
-technologyBtn.addEventListener('click', () => {
-    newstype.innerHTML = '<h4>TECHNOLOGY NEWS</h4>';
-
-    fetchTechnologyNews();
-});
-
-searchBtn.addEventListener('click', () => {
-    newstype.innerHTML = `<h4>Results: ${newsinput.value}</h4>`;
-
-    fetchNews();
-});
-
-const fetchHeadlinesNews = async () => {
-    const res = await fetch(HEADLINES + API_KEY)
-    newsData = [];
-    if (res.status >= 200 && res.status < 300) {
-        const data = await res.json();
-        newsData = data.articles;
-
-    } else {
-        //handle error
-        console.log(res.status, res.statusText);
-    }
-    displayNews();
+// Tab UI handling
+function setActiveTab(activeId) {
+  ['tab-news', 'tab-weather', 'tab-stocks'].forEach(id => {
+    document.getElementById(id).classList.toggle('active', id === activeId);
+  });
 }
 
-const fetchGeneralNews = async () => {
-    const res = await fetch(GENERAL_NEWS + API_KEY)
-    newsData = [];
-    if (res.status >= 200 && res.status < 300) {
-        const data = await res.json();
-        newsData = data.articles;
-
-    } else {
-        //handle error
-        console.log(res.status, res.statusText);
-    }
-    displayNews();
+// Load news tab with sub-tabs and content
+function loadNewsTab() {
+  setActiveTab('tab-news');
+  contentArea.innerHTML = `
+    <ul class="nav nav-tabs" id="newsSubTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="sports-tab" data-bs-toggle="tab" data-bs-target="#sports" type="button" role="tab" aria-controls="sports" aria-selected="false">Sports</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="business-tab" data-bs-toggle="tab" data-bs-target="#business" type="button" role="tab" aria-controls="business" aria-selected="false">Business</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="entertainment-tab" data-bs-toggle="tab" data-bs-target="#entertainment" type="button" role="tab" aria-controls="entertainment" aria-selected="false">Entertainment</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="technology-tab" data-bs-toggle="tab" data-bs-target="#technology" type="button" role="tab" aria-controls="technology" aria-selected="false">Technology</button>
+      </li>
+    </ul>
+    <div class="tab-content mt-3" id="newsTabContent">
+      <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">Loading...</div>
+      <div class="tab-pane fade" id="sports" role="tabpanel" aria-labelledby="sports-tab">Loading...</div>
+      <div class="tab-pane fade" id="business" role="tabpanel" aria-labelledby="business-tab">Loading...</div>
+      <div class="tab-pane fade" id="entertainment" role="tabpanel" aria-labelledby="entertainment-tab">Loading...</div>
+      <div class="tab-pane fade" id="technology" role="tabpanel" aria-labelledby="technology-tab">Loading...</div>
+    </div>
+  `;
+  ['general', 'sports', 'business', 'entertainment', 'technology'].forEach(fetchNewsByCategory);
 }
 
-const fetchSportsNews = async () => {
-    const res = await fetch(SPORTS_NEWS + API_KEY);
-    newsData = [];
-    if (res.status >= 200 && res.status < 300) {
-        const data = await res.json();
-        newsData = data.articles;
-
-
-    } else {
-        //handle error
-        console.log(res.status, res.statusText);
-    }
-
-    displayNews();
+async function fetchJson(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+  return await res.json();
 }
 
-const fetchBusinessNews = async () => {
-    const res = await fetch(BUSINESS_NEWS + API_KEY);
-    newsData = [];
-    if (res.status >= 200 && res.status < 300) {
-        const data = await res.json();
-        newsData = data.articles;
-
-
-    } else {
-        //handle error
-        console.log(res.status, res.statusText);
+// News fetching
+async function fetchNewsByCategory(category) {
+  const container = document.getElementById(category);
+  container.innerHTML = 'Loading news...';
+  try {
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${NEWS_API_KEY}`;
+    const data = await fetchJson(url);
+    if (!data.articles.length) {
+      container.innerHTML = '<p>No news found.</p>';
+      return;
     }
-
-    displayNews();
+    container.innerHTML = '';
+    data.articles.forEach(article => {
+      const card = document.createElement('div');
+      card.className = 'card mb-3';
+      card.innerHTML = `
+        <img src="${article.urlToImage || 'https://via.placeholder.com/600x180?text=No+Image'}" alt="News Image" />
+        <div class="card-body">
+          <h5 class="card-title">${article.title}</h5>
+          <p class="card-text">${article.description || ''}</p>
+          <a href="${article.url}" target="_blank" class="btn btn-primary btn-sm">Read More</a>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  } catch (err) {
+    container.innerHTML = `<p>Error loading news: ${err.message}</p>`;
+  }
 }
 
-const fetchEntertainmentNews = async () => {
-    const res = await fetch(ENTERTAINMENT_NEWS + API_KEY);
-    newsData = [];
-    if (res.status >= 200 && res.status < 300) {
-        const data = await res.json();
-        console.log(data)
-        newsData = data.articles;
-
-
-    } else {
-        //handle error
-        console.log(res.status, res.statusText);
+// Weather tab
+function loadWeatherTab() {
+  setActiveTab('tab-weather');
+  contentArea.innerHTML = `
+    <h4>Check Weather</h4>
+    <form id="weatherForm" class="mb-3">
+      <div class="input-group">
+        <input type="text" class="form-control" id="cityInput" placeholder="Enter city name" required />
+        <button class="btn btn-primary" type="submit">Get Weather</button>
+      </div>
+    </form>
+    <div id="weatherResult"></div>
+  `;
+  const form = document.getElementById('weatherForm');
+  const weatherResult = document.getElementById('weatherResult');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const city = document.getElementById('cityInput').value.trim();
+    if (!city) return;
+    weatherResult.innerHTML = 'Loading weather...';
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${WEATHER_API_KEY}`;
+      const data = await fetchJson(url);
+      const icon = data.weather[0].icon ? `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png` : '';
+      weatherResult.innerHTML = `
+        <div class="card p-3">
+          <h5>${data.name}, ${data.sys.country}</h5>
+          <p><img src="${icon}" alt="Weather icon" /> ${data.weather[0].description}</p>
+          <p>Temperature: ${data.main.temp} °C</p>
+          <p>Humidity: ${data.main.humidity}%</p>
+          <p>Wind Speed: ${data.wind.speed} m/s</p>
+        </div>`;
+    } catch (err) {
+      weatherResult.innerHTML = `<p>Error fetching weather: ${err.message}</p>`;
     }
-    displayNews();
+  });
 }
 
-const fetchTechnologyNews = async () => {
-    const res = await fetch(TECHNOLOGY_NEWS + API_KEY);
-    newsData = [];
-    if (res.status >= 200 && res.status < 300) {
-        const data = await res.json();
-        newsData = data.articles;
-
-
-    } else {
-        //handle error
-        console.log(res.status, res.statusText);
-    }
-    displayNews();
-}
-
-const fetchNews = async () => {
-
-    if (newsinput.valur === null) {
+// Stocks tab
+function loadStocksTab() {
+  setActiveTab('tab-stocks');
+  contentArea.innerHTML = `
+    <h4>Stock Quote</h4>
+    <form id="stockForm" class="mb-3">
+      <div class="input-group">
+        <input type="text" class="form-control" id="stockSymbol" placeholder="Enter stock symbol (e.g. AAPL)" required />
+        <button class="btn btn-primary" type="submit">Get Quote</button>
+      </div>
+    </form>
+    <div id="stockResult"></div>
+  `;
+  const form = document.getElementById('stockForm');
+  const stockResult = document.getElementById('stockResult');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const symbol = document.getElementById('stockSymbol').value.trim().toUpperCase();
+    if (!symbol) return;
+    stockResult.innerHTML = 'Loading stock data...';
+    try {
+      const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${STOCK_API_KEY}`;
+      const data = await fetchJson(url);
+      const quote = data['Global Quote'];
+      if (!quote || Object.keys(quote).length === 0) {
+        stockResult.innerHTML = '<p>No data found for symbol.</p>';
         return;
+      }
+      stockResult.innerHTML = `
+        <div class="card p-3">
+          <h5>${symbol} - ${quote['01. symbol']}</h5>
+          <p>Price: $${parseFloat(quote['05. price']).toFixed(2)}</p>
+          <p>Change: ${quote['09. change']} (${quote['10. change percent']})</p>
+          <p>Volume: ${parseInt(quote['06. volume']).toLocaleString()}</p>
+          <p>Latest Trading Day: ${quote['07. latest trading day']}</p>
+        </div>
+      `;
+    } catch (err) {
+      stockResult.innerHTML = `<p>Error fetching stock data: ${err.message}</p>`;
     }
-
-    const res = await fetch(SEARCH_NEWS + encodeURIComponent(newsinput.value)  + '&apikey=' + API_KEY);
-    newsData = [];
-    if (res.status >= 200 && res.status < 300) {
-        const data = await res.json();
-        newsData = data.articles;
-
-
-    } else {
-        //handle error
-        console.log(res.status, res.statusText);
-    }
-    displayNews();
-};
-
-//displaying the news
-
-const displayNews = () => {
-    newsdetails.innerHTML = '';
-if(newsData.length === 0) {
-    newsdetails.innerHTML = '<h6>Error, no information found</h6>'
+  });
 }
 
-//loop through array and create elements to render data
-newsData.forEach(news => {
-    var column = document.createElement('div');
-    column.className='col-sm-12 col-md-4 col-lg-3 p-2 card';
+// Initial load
+loadNewsTab();
 
-    var card = document.createElement('div');
-    card.className='p-2';
-
-    var image = document.createElement('img');
-    image.setAttribute('height', 'matchparnt');
-    image.setAttribute('width', '100%');
-    image.src = news.urlToImage;
-
-
-    var cardBody = document.createElement('div');
-
-    var newsHeading = document.createElement('h5');
-    newsHeading.className = 'card-title';
-    newsHeading.innerHTML = news.title;
-
-    var dateHeading = document.createElement('h6');
-    dateHeading.className = 'text-primary';
-    const date = new Date();
-    dateHeading.innerHTML = date;
-
-    var description = document.createElement('p');
-    description.className = 'text-muted';
-    description.innerHTML = news.description;
-    
-//Read more link
-    var link = document.createElement('a');
-    link.className = 'btn btn-dark';
-    link.setAttribute('target', '_blank');
-    link.href = news.url;
-    link.innerHTML = 'Read More';
-
-    cardBody.appendChild(newsHeading);
-    cardBody.appendChild(dateHeading);
-    cardBody.appendChild(description);
-    cardBody.appendChild(link);
-    
-    card.appendChild(image);
-    card.appendChild(cardBody);
-
-    column.appendChild(card);
-
-    newsdetails.appendChild(column);
-
-})
-}
+// Navbar event listeners
+document.getElementById('tab-news').addEventListener('click', e => {
+  e.preventDefault();
+  loadNewsTab();
+});
+document.getElementById('tab-weather').addEventListener('click', e => {
+  e.preventDefault();
+  loadWeatherTab();
+});
+document.getElementById('tab-stocks').addEventListener('click', e => {
+  e.preventDefault();
+  loadStocksTab();
+});
