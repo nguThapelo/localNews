@@ -56,7 +56,7 @@ async function fetchNewsByCategory(category) {
   const container = document.getElementById(category);
   container.innerHTML = 'Loading news...';
   try {
-    const url = `http://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${NEWS_API_KEY}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${NEWS_API_KEY}`;
     const data = await fetchJson(url);
     if (!data.articles.length) {
       container.innerHTML = '<p>No news found.</p>';
@@ -102,9 +102,9 @@ function loadWeatherTab() {
     if (!city) return;
     weatherResult.innerHTML = 'Loading weather...';
     try {
-      const url = `http://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${WEATHER_API_KEY}`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${WEATHER_API_KEY}`;
       const data = await fetchJson(url);
-      const icon = data.weather[0].icon ? `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png` : '';
+      const icon = data.weather[0].icon ? `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png` : '';
       weatherResult.innerHTML = `
         <div class="card p-3">
           <h6>${data.name}, ${data.sys.country}</h6>
